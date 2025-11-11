@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import logo from '../../assets/pezzo.jpg';
 import './Header.css';
 
 interface HeaderProps {
@@ -17,7 +18,7 @@ const Header: FC<HeaderProps> = ({ onNewPost, onManageData, onAuthModal }) => {
         <div className="header-content">
           <div className="brand">
             <div className="logo animate-float">
-              <img src="/src/assets/pezzo.jpg" alt="PEZZO Logo" width="40" height="40" />
+              <img src={logo} alt="PEZZO Logo" width="40" height="40" />
             </div>
             <h1 className="brand-text text-display text-gradient">PEZZO</h1>
             <p className="brand-subtitle">Pensamentos em Órbita</p>
