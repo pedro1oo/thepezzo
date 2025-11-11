@@ -1,0 +1,247 @@
+.post-card {
+  position: relative;
+  background: var(--gradient-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  transition: all var(--transition-normal);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.post-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.post-card:hover::before {
+  opacity: 1;
+}
+
+.post-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-sm);
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.mood-indicator {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.post-date {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.post-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.post-card:hover .post-actions {
+  opacity: 1;
+}
+
+.action-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 0.875rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.action-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-accent);
+  transform: scale(1.1);
+}
+
+.edit-btn:hover {
+  box-shadow: 0 0 10px rgba(14, 165, 233, 0.3);
+}
+
+.delete-btn:hover {
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+  border-color: #ef4444;
+}
+
+.post-content {
+  margin-bottom: var(--spacing-md);
+}
+
+.post-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+  line-height: 1.3;
+}
+
+.post-text {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+/* Markdown styling within post cards */
+.post-text .markdown-content {
+  font-size: inherit;
+}
+
+.post-text .markdown-h1,
+.post-text .markdown-h2,
+.post-text .markdown-h3,
+.post-text .markdown-h4,
+.post-text .markdown-h5,
+.post-text .markdown-h6 {
+  margin-top: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+}
+
+.post-text .markdown-h1 {
+  font-size: 1.2rem;
+}
+
+.post-text .markdown-h2 {
+  font-size: 1.1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.post-text .markdown-h3 {
+  font-size: 1rem;
+}
+
+.post-text .markdown-p {
+  margin-bottom: var(--spacing-xs);
+}
+
+.post-text .markdown-blockquote {
+  margin: var(--spacing-xs) 0;
+  padding: var(--spacing-xs);
+}
+
+.post-text .markdown-pre {
+  margin: var(--spacing-xs) 0;
+  padding: var(--spacing-xs);
+  font-size: 0.85rem;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+}
+
+.tag {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--text-accent);
+  padding: 0.25rem var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.tag:hover {
+  background: rgba(14, 165, 233, 0.2);
+  border-color: var(--text-accent);
+}
+
+.post-card-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.post-card:hover .post-card-glow {
+  opacity: 1;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .post-card {
+    padding: var(--spacing-sm);
+  }
+  
+  .post-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+  
+  .post-actions {
+    opacity: 1;
+    align-self: flex-end;
+  }
+  
+  .post-title {
+    font-size: 1.1rem;
+  }
+  
+  .post-text {
+    font-size: 0.9rem;
+  }
+}
+
+/* Animation for new posts */
+@keyframes card-appear {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.post-card-new {
+  animation: card-appear 0.5s ease-out;
+}

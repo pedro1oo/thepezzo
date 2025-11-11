@@ -1,0 +1,40 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Regras para a coleção de posts
+    match /posts/{document} {
+      // Qualquer pessoa pode LER os posts
+      allow read: if true;
+      
+      // Apenas usuários autenticados podem ESCREVER posts
+      allow create, update, delete: if request.auth != null;
+    }
+    
+    // Negar acesso a todas as outras coleções por padrão
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+/*
+EXPLICAÇÃO DAS REGRAS:
+
+1. LEITURA (read): 
+   - Qualquer pessoa pode visualizar os posts
+   - Não precisa estar logada
+
+2. ESCRITA (create, update, delete):
+   - Apenas usuários autenticados podem criar/editar/deletar
+   - A verificação do email autorizado é feita no frontend
+
+3. SEGURANÇA:
+   - Outras coleções ficam protegidas por padrão
+   - Apenas a coleção 'posts' tem acesso liberado para leitura
+
+Para aplicar essas regras:
+1. Vá em https://console.firebase.google.com/project/pezzo-b407c/firestore/rules
+2. Cole o código acima
+3. Clique em "Publicar"
+*/
