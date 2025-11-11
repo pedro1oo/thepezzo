@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import type { Post } from '../../types/Post';
 import MarkdownRenderer from '../MarkdownRenderer/MarkdownRenderer';
+import { useAuth } from '../../contexts/AuthContext';
 import './PostCard.css';
 
 interface PostCardProps {
@@ -10,6 +11,8 @@ interface PostCardProps {
 }
 
 const PostCard: FC<PostCardProps> = ({ post, onEdit, onDelete }) => {
+  const { isAuthorized } = useAuth();
+  
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('pt-BR', {
       day: '2-digit',
@@ -51,22 +54,24 @@ const PostCard: FC<PostCardProps> = ({ post, onEdit, onDelete }) => {
           <time className="post-date">{formatDate(post.date)}</time>
         </div>
         
-        <div className="post-actions">
-          <button 
-            className="action-btn edit-btn"
-            onClick={() => onEdit(post)}
-            aria-label="Editar post"
-          >
-            ✏️
-          </button>
-          <button 
-            className="action-btn delete-btn"
-            onClick={() => onDelete(post.id)}
-            aria-label="Deletar post"
-          >
-            🗑️
-          </button>
-        </div>
+        {isAuthorized && (
+          <div className="post-actions">
+            <button 
+              className="action-btn edit-btn"
+              onClick={() => onEdit(post)}
+              aria-label="Editar post"
+            >
+              ✏️
+            </button>
+            <button 
+              className="action-btn delete-btn"
+              onClick={() => onDelete(post.id)}
+              aria-label="Deletar post"
+            >
+              🗑️
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="post-content">
