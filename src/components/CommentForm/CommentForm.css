@@ -1,0 +1,227 @@
+.comment-form-container {
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-sm) 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.comment-form {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  transition: all var(--transition-fast);
+}
+
+.comment-form:focus-within {
+  border-color: var(--text-accent);
+  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
+}
+
+.comment-form-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.comment-author-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.comment-author-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+}
+
+.comment-author-avatar-placeholder {
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.comment-author-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.comment-form-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.comment-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: var(--spacing-sm);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  resize: vertical;
+  transition: all var(--transition-fast);
+}
+
+.comment-textarea:focus {
+  outline: none;
+  border-color: var(--text-accent);
+  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
+}
+
+.comment-textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--bg-secondary);
+}
+
+.comment-textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+.comment-error {
+  padding: var(--spacing-xs);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-sm);
+  color: #ef4444;
+  font-size: 0.875rem;
+}
+
+.login-hint-message {
+  padding: var(--spacing-xs);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-sm);
+  color: #10b981;
+  font-size: 0.75rem;
+  animation: fade-in 0.3s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.comment-form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--spacing-xs);
+}
+
+.comment-char-count {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.comment-submit-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: 36px;
+}
+
+.comment-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+.comment-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.comment-submit-btn:disabled:not(.loading) {
+  opacity: 0.7;
+}
+
+.comment-submit-btn.loading {
+  opacity: 0.9;
+}
+
+.comment-submit-btn.login-hint {
+  animation: login-hint 0.6s ease-out;
+  background: linear-gradient(45deg, var(--text-accent), #10b981);
+}
+
+@keyframes login-hint {
+  0% { 
+    transform: scale(1); 
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+  }
+  50% { 
+    transform: scale(1.05); 
+    box-shadow: 0 8px 20px rgba(14, 165, 233, 0.5);
+  }
+  100% { 
+    transform: scale(1); 
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+  }
+}
+
+.btn-icon {
+  font-size: 0.875rem;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .comment-form-container {
+    margin: var(--spacing-sm) 0;
+  }
+  
+  .comment-form {
+    padding: var(--spacing-xs);
+  }
+  
+  .comment-textarea {
+    min-height: 60px;
+    font-size: 1rem; /* Prevent zoom on iOS */
+  }
+  
+  .comment-form-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+  
+  .comment-submit-btn {
+    align-self: flex-end;
+  }
+}

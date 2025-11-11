@@ -1,6 +1,8 @@
 import type { FC } from 'react';
+import { useState } from 'react';
 import type { Post } from '../../types/Post';
 import MarkdownRenderer from '../MarkdownRenderer/MarkdownRenderer';
+import CommentList from '../CommentList/CommentList';
 import { useAuth } from '../../contexts/AuthContext';
 import './PostCard.css';
 
@@ -14,6 +16,7 @@ interface PostCardProps {
 
 const PostCard: FC<PostCardProps> = ({ post, onEdit, onDelete, onLike, onOpenAuthModal }) => {
   const { user, isAuthorized } = useAuth();
+  const [showComments, setShowComments] = useState(false);
   
   // Verificar se o usuário atual curtiu o post
   const isLiked = user && post.likes ? post.likes.includes(user.uid) : false;
@@ -115,7 +118,25 @@ const PostCard: FC<PostCardProps> = ({ post, onEdit, onDelete, onLike, onOpenAut
           <span className="like-icon">{isLiked ? '❤️' : '🤍'}</span>
           <span className="like-count">{likeCount}</span>
         </button>
+
+        <button 
+          className="comments-toggle-btn"
+          onClick={() => setShowComments(!showComments)}
+          aria-label={showComments ? 'Ocultar comentários' : 'Mostrar comentários'}
+        >
+          <span className="btn-icon">💬</span>
+          <span className="btn-text">
+            {showComments ? 'Ocultar' : 'Comentários'}
+          </span>
+        </button>
       </div>
+
+      {showComments && (
+        <CommentList 
+          postId={post.id}
+          onOpenAuthModal={onOpenAuthModal}
+        />
+      )}
 
       <div className="post-card-glow"></div>
     </article>
