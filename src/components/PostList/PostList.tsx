@@ -7,9 +7,11 @@ interface PostListProps {
   posts: Post[];
   onEditPost: (post: Post) => void;
   onDeletePost: (id: string) => void;
+  onLikePost: (postId: string, currentUserId: string | undefined, isCurrentlyLiked: boolean) => void;
+  onOpenAuthModal: () => void;
 }
 
-const PostList: FC<PostListProps> = ({ posts, onEditPost, onDeletePost }) => {
+const PostList: FC<PostListProps> = ({ posts, onEditPost, onDeletePost, onLikePost, onOpenAuthModal }) => {
   if (posts.length === 0) {
     return (
       <div className="empty-state">
@@ -35,6 +37,8 @@ const PostList: FC<PostListProps> = ({ posts, onEditPost, onDeletePost }) => {
             post={post}
             onEdit={onEditPost}
             onDelete={onDeletePost}
+            onLike={onLikePost}
+            onOpenAuthModal={onOpenAuthModal}
           />
         ))}
       </div>

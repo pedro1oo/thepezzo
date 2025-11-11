@@ -30,7 +30,8 @@ function AppContent() {
     isOnline, 
     createPost, 
     updatePost, 
-    deletePost, 
+    deletePost,
+    toggleLike,
     syncPosts 
   } = usePosts();
 
@@ -73,6 +74,15 @@ function AppContent() {
         console.error('Erro ao deletar post:', error);
         alert(error instanceof Error ? error.message : 'Falha ao deletar o post. Tente novamente.');
       }
+    }
+  };
+
+  const handleLikePost = async (postId: string, currentUserId: string | undefined, isCurrentlyLiked: boolean) => {
+    try {
+      await toggleLike(postId, currentUserId, isCurrentlyLiked);
+    } catch (error) {
+      console.error('Erro ao curtir post:', error);
+      alert(error instanceof Error ? error.message : 'Falha ao curtir o post. Tente novamente.');
     }
   };
 
@@ -167,6 +177,8 @@ function AppContent() {
               posts={posts}
               onEditPost={handleEditPost}
               onDeletePost={handleDeletePost}
+              onLikePost={handleLikePost}
+              onOpenAuthModal={handleAuthModal}
             />
           )}
         </div>

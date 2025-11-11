@@ -9,7 +9,9 @@ import {
   orderBy,
   onSnapshot,
   serverTimestamp,
-  Timestamp
+  Timestamp,
+  arrayUnion,
+  arrayRemove
 } from 'firebase/firestore';
 import { db, auth } from './config';
 import type { Post, PostFormData } from '../types/Post';
@@ -56,7 +58,9 @@ const firebaseToPost = (doc: any): Post => ({
   content: doc.data().content,
   date: doc.data().date?.toDate() || new Date(),
   tags: doc.data().tags || [],
-  mood: doc.data().mood || 'neutral'
+  mood: doc.data().mood || 'neutral',
+  likes: doc.data().likes || [],
+  likeCount: doc.data().likes?.length || 0
 });
 
 // Nome da coleção
@@ -191,6 +195,56 @@ export const postsService = {
       console.error('Erro ao configurar listener:', error);
       if (onError) onError(new Error('Falha ao configurar sincronização'));
       return () => {}; // Retorna função vazia se houver erro
+    }
+  },
+
+  // Curtir um post (usuário deve estar logado)
+  async likePost(postId: string): Promise<void> {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error('❌ Você precisa estar logado para curtir posts');
+      }
+
+      console.log(`Curtindo post ${postId} como ${user.email}...`);
+      const docRef = doc(db, POSTS_COLLECTION, postId);
+      
+      await updateDoc(docRef, {
+        likes: arrayUnion(user.uid)
+      });
+      
+      console.log('Post curtido com sucesso!');
+    } catch (error) {
+      console.error('Erro ao curtir post:', error);
+      if (error instanceof Error && error.message.includes('❌')) {
+        throw error;
+      }
+      throw new Error('Falha ao curtir post');
+    }
+  },
+
+  // Descurtir um post (usuário deve estar logado)
+  async unlikePost(postId: string): Promise<void> {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error('❌ Você precisa estar logado para descurtir posts');
+      }
+
+      console.log(`Descurtindo post ${postId} como ${user.email}...`);
+      const docRef = doc(db, POSTS_COLLECTION, postId);
+      
+      await updateDoc(docRef, {
+        likes: arrayRemove(user.uid)
+      });
+      
+      console.log('Post descurtido com sucesso!');
+    } catch (error) {
+      console.error('Erro ao descurtir post:', error);
+      if (error instanceof Error && error.message.includes('❌')) {
+        throw error;
+      }
+      throw new Error('Falha ao descurtir post');
     }
   }
 };

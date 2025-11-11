@@ -8,10 +8,24 @@ interface PostCardProps {
   post: Post;
   onEdit: (post: Post) => void;
   onDelete: (id: string) => void;
+  onLike: (postId: string, currentUserId: string | undefined, isCurrentlyLiked: boolean) => void;
+  onOpenAuthModal: () => void;
 }
 
-const PostCard: FC<PostCardProps> = ({ post, onEdit, onDelete }) => {
-  const { isAuthorized } = useAuth();
+const PostCard: FC<PostCardProps> = ({ post, onEdit, onDelete, onLike, onOpenAuthModal }) => {
+  const { user, isAuthorized } = useAuth();
+  
+  // Verificar se o usuário atual curtiu o post
+  const isLiked = user && post.likes ? post.likes.includes(user.uid) : false;
+  const likeCount = post.likeCount || 0;
+
+  const handleLike = () => {
+    if (!user) {
+      onOpenAuthModal();
+      return;
+    }
+    onLike(post.id, user.uid, isLiked);
+  };
   
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('pt-BR', {
@@ -79,17 +93,29 @@ const PostCard: FC<PostCardProps> = ({ post, onEdit, onDelete }) => {
         <div className="post-text">
           <MarkdownRenderer content={post.content} className="post-markdown" />
         </div>
+        
+        {post.tags && post.tags.length > 0 && (
+          <div className="post-tags">
+            {post.tags.map((tag, index) => (
+              <span key={index} className="tag">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
-      {post.tags && post.tags.length > 0 && (
-        <div className="post-tags">
-          {post.tags.map((tag, index) => (
-            <span key={index} className="tag">
-              #{tag}
-            </span>
-          ))}
-        </div>
-      )}
+      <div className="post-footer">
+        <button 
+          className={`like-btn ${isLiked ? 'liked' : ''}`}
+          onClick={handleLike}
+          aria-label={isLiked ? 'Descurtir post' : 'Curtir post'}
+          title={user ? (isLiked ? 'Descurtir' : 'Curtir') : 'Faça login para curtir'}
+        >
+          <span className="like-icon">{isLiked ? '❤️' : '🤍'}</span>
+          <span className="like-count">{likeCount}</span>
+        </button>
+      </div>
 
       <div className="post-card-glow"></div>
     </article>

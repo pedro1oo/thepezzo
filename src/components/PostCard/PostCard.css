@@ -8,6 +8,9 @@
   transition: all var(--transition-normal);
   overflow: hidden;
   backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
 }
 
 .post-card::before {
@@ -100,7 +103,58 @@
 }
 
 .post-content {
+  flex: 1;
   margin-bottom: var(--spacing-md);
+}
+
+.post-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: auto;
+  padding-top: var(--spacing-sm);
+}
+
+.like-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.like-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-accent);
+  transform: scale(1.05);
+}
+
+.like-btn.liked {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.like-btn.liked:hover {
+  background: rgba(239, 68, 68, 0.2);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+.like-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.like-count {
+  font-weight: 600;
+  min-width: 1rem;
+  text-align: center;
 }
 
 .post-title {

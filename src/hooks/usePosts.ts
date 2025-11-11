@@ -206,6 +206,49 @@ export const usePosts = () => {
     }
   }, [isOnline, posts, saveLocalPosts]);
 
+  // Curtir/descurtir post
+  const toggleLike = useCallback(async (postId: string, currentUserId: string | undefined, isCurrentlyLiked: boolean) => {
+    try {
+      setError(null);
+      
+      if (!currentUserId) {
+        throw new Error('❌ Você precisa estar logado para curtir posts');
+      }
+      
+      if (isOnline) {
+        // Se online, curtir/descurtir no Firebase
+        if (isCurrentlyLiked) {
+          await postsService.unlikePost(postId);
+        } else {
+          await postsService.likePost(postId);
+        }
+      } else {
+        // Se offline, atualizar localmente
+        const updatedPosts = posts.map(post => {
+          if (post.id === postId) {
+            const likes = post.likes || [];
+            const newLikes = isCurrentlyLiked
+              ? likes.filter(id => id !== currentUserId)
+              : [...likes, currentUserId];
+            
+            return {
+              ...post,
+              likes: newLikes,
+              likeCount: newLikes.length
+            };
+          }
+          return post;
+        });
+        setPosts(updatedPosts);
+        saveLocalPosts(updatedPosts);
+      }
+    } catch (error) {
+      console.error('Erro ao curtir/descurtir post:', error);
+      setError(error instanceof Error ? error.message : 'Falha ao curtir post');
+      throw error;
+    }
+  }, [isOnline, posts, saveLocalPosts]);
+
   return {
     posts,
     loading,
@@ -215,6 +258,7 @@ export const usePosts = () => {
     createPost,
     updatePost,
     deletePost,
+    toggleLike,
     syncPosts
   };
 };

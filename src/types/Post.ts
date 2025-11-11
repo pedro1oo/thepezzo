@@ -5,6 +5,8 @@ export interface Post {
   date: Date;
   tags?: string[];
   mood?: 'positive' | 'neutral' | 'contemplative' | 'ambitious';
+  likes?: string[]; // Array de user IDs que curtiram o post
+  likeCount?: number; // Contador de likes para performance
 }
 
 export interface PostFormData {
